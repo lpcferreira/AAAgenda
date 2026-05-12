@@ -1,7 +1,6 @@
 'use client';
-import React from 'react';
+import React, { Suspense } from 'react';
 import { useSession, signOut } from 'next-auth/react';
-import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { format, startOfWeek, addDays } from 'date-fns';
@@ -14,7 +13,7 @@ import { SplashScreen } from '@/components/SplashScreen';
 
 // ─── Componente principal ─────────────────────────────────────────────
 
-export default function AgendaPage() {
+function AgendaPageInner() {
   const { data: session, status, update } = useSession();
   const router = useRouter();
 
@@ -42,21 +41,19 @@ export default function AgendaPage() {
     if (status === 'unauthenticated') router.push('/login');
   }, [status, router]);
 
-  const searchParams = useSearchParams();
-
   // Força refresh da sessão UMA VEZ quando volta do link-account
   useEffect(() => {
     if (status !== 'authenticated') return;
-    if (searchParams.get('update') !== '1') return;
-    // Remove ?update=1 da URL para evitar loop
+    if (typeof window === 'undefined') return;
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('update') !== '1') return;
     const url = new URL(window.location.href);
     url.searchParams.delete('update');
     url.searchParams.delete('linked');
     window.history.replaceState({}, '', url.toString());
-    // Dispara update uma única vez
     update();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [status]); // intencional: só roda na montagem/autenticação
+  }, [status]);
 
   // Sincroniza linkedEmails sempre que a sessão mudar (incluindo após update())
   useEffect(() => {
@@ -509,5 +506,13 @@ export default function AgendaPage() {
       {/* Toast */}
       {toast && <div className={styles.toast}>{toast}</div>}
     </div>
+  );
+}
+
+export default function AgendaPage() {
+  return (
+    <Suspense fallback={<div style={{display:'flex',alignItems:'center',justifyContent:'center',height:'100dvh',fontSize:'0.9rem',color:'#6B6B67'}}>Carregando...</div>}>
+      <AgendaPageInner />
+    </Suspense>
   );
 }
