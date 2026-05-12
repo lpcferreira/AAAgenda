@@ -1,0 +1,15 @@
+{
+  "name": "AAAgenda — Agendamento Planetário",
+  "short_name": "AAAgenda",
+  "description": "Agende no momento certo com as Horas Planetárias",
+  "start_url": "/agenda",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FAFAF8",
+  "theme_color": "#FAFAF8",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ],
+  "categories": ["productivity", "utilities"],
+  "lang": "pt-BR"
+}

@@ -1,0 +1,96 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body:    'DM Sans', system-ui, sans-serif;
+
+  --act-a:      #F5C842;   --act-a-dark: #7A5F00;
+  --act-b:      #D4C4A8;   --act-b-dark: #4A3820;
+  --act-c:      #7FC8A9;   --act-c-dark: #1B6B4A;
+  --act-d:      #E8A0BF;   --act-d-dark: #8B3060;
+  --act-e:      #7FC8A9;   --act-e-dark: #1B6B4A;
+  --act-f:      #7BA7D4;   --act-f-dark: #1A3F6A;
+  --act-g:      #E07060;   --act-g-dark: #7A2010;
+
+  --bg:         #FAFAF8;
+  --bg-card:    #FFFFFF;
+  --bg-subtle:  #F3F1EC;
+  --text:       #1C1C1A;
+  --text-muted: #6B6B67;
+  --border:     rgba(0,0,0,0.10);
+  --border-md:  rgba(0,0,0,0.18);
+  --radius-sm:  6px;
+  --radius-md:  10px;
+  --radius-lg:  16px;
+
+  /* Safe area para iPhone com notch/Dynamic Island */
+  --safe-top:    env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left:   env(safe-area-inset-left, 0px);
+  --safe-right:  env(safe-area-inset-right, 0px);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:        #181816;
+    --bg-card:   #242422;
+    --bg-subtle: #2C2C28;
+    --text:      #F0EFE8;
+    --text-muted:#9B9B95;
+    --border:    rgba(255,255,255,0.10);
+    --border-md: rgba(255,255,255,0.18);
+  }
+}
+
+/* Font-size responsivo: 16px mobile → 18px tablet → 20px desktop */
+html { font-size: 16px; }
+@media (min-width: 480px) { html { font-size: 18px; } }
+@media (min-width: 768px) { html { font-size: 20px; } }
+
+body {
+  font-family:      var(--font-body);
+  background-color: var(--bg);
+  color:            var(--text);
+  line-height:      1.6;
+  min-height:       100dvh;
+  /* Previne zoom no iOS ao focar inputs */
+  -webkit-text-size-adjust: 100%;
+}
+
+h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 500; line-height: 1.2; }
+h1 { font-size: 2rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.15rem; }
+
+a { color: inherit; text-decoration: none; }
+
+button { font-family: var(--font-body); cursor: pointer; border: none; background: none; }
+
+/* Inputs — font-size mínimo 16px no mobile para não dar zoom no iOS */
+input, select, textarea {
+  font-family:   var(--font-body);
+  font-size:     max(16px, 0.875rem);
+  color:         var(--text);
+  background:    var(--bg-card);
+  border:        0.5px solid var(--border-md);
+  border-radius: var(--radius-sm);
+  padding:       8px 12px;
+  outline:       none;
+  width:         100%;
+  transition:    border-color 0.15s;
+  /* Previne zoom no iOS */
+  -webkit-appearance: none;
+}
+input:focus, select:focus, textarea:focus { border-color: var(--act-a-dark); }
+
+.act-a { background: var(--act-a); color: var(--act-a-dark); }
+.act-b { background: var(--act-b); color: var(--act-b-dark); }
+.act-c { background: var(--act-c); color: var(--act-c-dark); }
+.act-d { background: var(--act-d); color: var(--act-d-dark); }
+.act-e { background: var(--act-e); color: var(--act-e-dark); }
+.act-f { background: var(--act-f); color: var(--act-f-dark); }
+.act-g { background: var(--act-g); color: var(--act-g-dark); }
+
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-md); border-radius: 4px; }

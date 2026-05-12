@@ -1,0 +1,138 @@
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #FAFAF8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.4s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+  .root { background: #181816; }
+}
+
+.fadeOut { opacity: 0; pointer-events: none; }
+
+.layer {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  transition: opacity 0.5s ease;
+}
+.visible { opacity: 1; }
+.hidden  { opacity: 0; pointer-events: none; }
+
+/* ── Fase 1: foto ── */
+.photo {
+  width: 280px;
+  max-width: 80vw;
+  border-radius: 10px;
+  border: 0.5px solid rgba(0,0,0,0.12);
+  box-shadow: 0 2px 24px rgba(0,0,0,0.10);
+  object-fit: cover;
+}
+
+.credit {
+  font-size: 12px;
+  color: #9B9B95;
+  font-style: italic;
+  letter-spacing: 0.2px;
+}
+
+/* ── Fase 2: ícone + logo ── */
+.logoText {
+  font-family: Georgia, 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 500;
+  letter-spacing: -0.5px;
+  color: #1C1C1A;
+}
+
+@media (prefers-color-scheme: dark) {
+  .logoText { color: #F0EFE8; }
+}
+
+.logoText span { color: #7A5F00; }
+
+/* ── Agendas conectadas ── */
+.calendarList {
+  margin-top: 16px;
+  width: 280px;
+  max-width: 80vw;
+  background: rgba(255,255,255,0.85);
+  border: 0.5px solid rgba(0,0,0,0.10);
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .calendarList {
+    background: rgba(36,36,34,0.85);
+    border-color: rgba(255,255,255,0.10);
+  }
+}
+
+.calLabel {
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #9B9B95;
+  margin-bottom: 4px;
+}
+
+.accountRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.accountDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #F5C842;
+  border: 0.5px solid #7A5F00;
+  flex-shrink: 0;
+}
+
+.accountEmail {
+  font-size: 12px;
+  color: #1C1C1A;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (prefers-color-scheme: dark) {
+  .accountEmail { color: #F0EFE8; }
+}
+
+.calCount {
+  font-size: 10px;
+  color: #9B9B95;
+  white-space: nowrap;
+}
+
+/* ── Skip button ── */
+.skipBtn {
+  margin-top: 14px;
+  font-size: 12px;
+  color: #9B9B95;
+  background: none;
+  border: 0.5px solid rgba(0,0,0,0.12);
+  border-radius: 20px;
+  padding: 5px 14px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: opacity 0.15s;
+}
+.skipBtn:hover { opacity: 0.7; }
