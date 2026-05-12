@@ -61,7 +61,7 @@ export default function AgendaPage() {
   // Sincroniza linkedEmails sempre que a sessão mudar (incluindo após update())
   useEffect(() => {
     if (status !== 'authenticated') return;
-    const linked = (session as Record<string, unknown>).linkedEmails as string[] ?? [];
+    const linked = (session as unknown as Record<string, unknown>).linkedEmails as string[] ?? [];
     setLinkedEmails(linked);
   }, [status, session]);
 

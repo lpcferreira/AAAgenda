@@ -141,4 +141,3 @@ src/
 - [ ] **v0.3** — Notificações: agente avisa proativamente sobre bons slots do dia
 - [ ] **v0.4** — Mobile (PWA ou React Native)
 - [ ] **v1.0** — Crystal API (Phase 2): cruzar perfil DISC do convidado com a hora planetária
-# AAAgenda

@@ -17,9 +17,9 @@ const store = new Map<string, RateEntry>();
 // Limpeza periódica para não vazar memória
 setInterval(() => {
   const now = Date.now();
-  for (const [key, entry] of store.entries()) {
+  Array.from(store.entries()).forEach(([key, entry]) => {
     if (entry.resetAt < now) store.delete(key);
-  }
+  });
 }, 5 * 60 * 1000); // a cada 5 minutos
 
 export interface RateLimitResult {

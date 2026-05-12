@@ -103,26 +103,22 @@ export async function createCalendarEvent(
 
   const attendees = (event.guestEmails ?? []).map((email) => ({ email }));
 
-  const body: Parameters<typeof calendar.events.insert>[0]['requestBody'] = {
-    summary:     event.title,
-    description: event.description,
-    start:       { dateTime: event.start, timeZone: 'America/Sao_Paulo' },
-    end:         { dateTime: event.end,   timeZone: 'America/Sao_Paulo' },
-    attendees:   attendees.length ? attendees : undefined,
-    // Nota planetária no campo extendedProperties para não poluir a descrição
-    extendedProperties: event.activityCode ? {
-      private: {
-        aaaActivityCode:   event.activityCode,
-        aaaPlanetaryNote:  event.planetaryNote ?? '',
-        aaaPlanet:         ACTIVITIES[event.activityCode].planet,
-      },
-    } : undefined,
-  };
-
   const { data } = await calendar.events.insert({
-    calendarId:  event.calendarId,
-    requestBody: body,
+    calendarId:        event.calendarId,
     sendNotifications: true,
+    requestBody: {
+      summary:     event.title,
+      description: event.description,
+      start:       { dateTime: event.start, timeZone: 'America/Sao_Paulo' },
+      end:         { dateTime: event.end,   timeZone: 'America/Sao_Paulo' },
+      attendees:   attendees.length ? attendees : undefined,
+      extendedProperties: event.activityCode ? {
+        private: {
+          aaaActivityCode: event.activityCode,
+          aaaNotes:        event.planetaryNote ?? '',
+        },
+      } : undefined,
+    },
   });
 
   return { id: data.id!, htmlLink: data.htmlLink! };

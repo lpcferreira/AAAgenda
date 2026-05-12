@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { getToken } from 'next-auth/jwt';
-import { authOptions } from '../auth/[...nextauth]/route';
+import { authOptions } from '@/lib/authOptions';
 import Anthropic from '@anthropic-ai/sdk';
 import { ACTIVITIES, DAYS, PLANETARY_GRID, TIME_BLOCKS } from '@/lib/planetary';
 import { createCalendarEvent, listCalendars, getWeekEvents } from '@/lib/calendar';
@@ -193,21 +193,21 @@ async function runCheckAvailability(
     for (const { email, accessToken } of accountTokens) {
       // Calendários desta conta — filtra os ignorados
       const accountCals = calendarList.filter(c =>
-        (c.accountEmail === email || c.id === email) &&
+        c.accountEmail === email &&
         !isIgnoredCalendar(c.id, c.summary)
       );
 
-      // Se não encontrou calendários mapeados, tenta o email principal da conta
-      const calsToCheck = accountCals.length > 0
+      // Garante que o email principal está sempre incluído
+      const hasMainCal = accountCals.some(c => c.id === email);
+      const calsToCheck = hasMainCal
         ? accountCals
-        : [{ id: email, accountEmail: email, summary: email }];
+        : [{ id: email, accountEmail: email, summary: email }, ...accountCals];
 
       for (const cal of calsToCheck) {
         if (isIgnoredCalendar(cal.id, cal.summary)) continue;
         try {
           const events = await getWeekEvents(accessToken, cal.id, start, end);
           for (const e of events) {
-            // Ignora eventos de dia inteiro
             if (e.start && !e.start.includes('T')) continue;
             allEvents.push({
               account:  email,
@@ -217,7 +217,9 @@ async function runCheckAvailability(
               end:      e.end,
             });
           }
-        } catch { /* agenda sem permissão ou vazia — ignora */ }
+        } catch (err) {
+          console.log(`[AAA] getWeekEvents falhou para ${cal.id} (${email}):`, String(err).slice(0, 100));
+        }
       }
     }
 
@@ -311,21 +313,23 @@ export async function POST(request: NextRequest) {
   const todayLabel = formatDateBR(new Date(todayISO + 'T12:00:00-03:00'));
 
   // Lista calendários de todas as contas
+  // IMPORTANTE: sempre inclui o email como calendário principal mesmo se listCalendars falhar
   let calendarList: Array<{ id: string; accountEmail: string; summary?: string }> = [];
   for (const { email, accessToken: token } of accountTokens) {
+    // Garante que o calendário principal da conta sempre está na lista
+    calendarList.push({ id: email, accountEmail: email, summary: email });
     try {
       const cals = await listCalendars(token, email);
-      calendarList.push(...cals.map(c => ({
-        id:           c.id,
-        accountEmail: email,
-        summary:      c.summary,
-      })));
-    } catch { /* conta sem permissão */ }
-  }
-
-  // Fallback para contexto do frontend
-  if (calendarList.length === 0 && context?.calendars) {
-    calendarList = context.calendars.map(c => ({ id: c.id, accountEmail: c.id, summary: c.summary }));
+      // Adiciona sub-calendários, evitando duplicar o principal
+      for (const c of cals) {
+        if (!calendarList.find(x => x.id === c.id)) {
+          calendarList.push({ id: c.id, accountEmail: email, summary: c.summary });
+        }
+      }
+    } catch {
+      // listCalendars falhou mas o calendário principal (email) já está na lista
+      console.log(`[AAA] listCalendars falhou para ${email} — usando email como calendarId`);
+    }
   }
 
   const weekMap  = buildWeekMap(todayISO, 3);
@@ -348,7 +352,7 @@ ${weekMap}`;
   const agentMessages: Anthropic.MessageParam[] = messages
     .slice(-10)
     .map(m => ({
-      role:    (m.role === 'agent' ? 'assistant' : 'user') as 'user' | 'assistant',
+      role:    (m.role as string) === 'agent' ? 'assistant' as const : 'user' as const,
       content: String(m.content).slice(0, 3000),
     }));
 

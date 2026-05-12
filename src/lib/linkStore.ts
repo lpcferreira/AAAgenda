@@ -23,11 +23,11 @@ const store = new Map<string, PendingLink[]>();
 // Limpeza de entradas antigas (> 5 minutos)
 setInterval(() => {
   const cutoff = Date.now() - 5 * 60 * 1000;
-  for (const [key, links] of store.entries()) {
-    const fresh = links.filter((l) => l.savedAt > cutoff);
+  Array.from(store.entries()).forEach(([key, links]) => {
+    const fresh = links.filter((l: PendingLink) => l.savedAt > cutoff);
     if (fresh.length === 0) store.delete(key);
     else store.set(key, fresh);
-  }
+  });
 }, 60_000);
 
 export function savePendingLink(primaryEmail: string, link: Omit<PendingLink, 'savedAt'>) {

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { getToken } from 'next-auth/jwt';
-import { authOptions } from '../auth/[...nextauth]/route';
+import { authOptions } from '@/lib/authOptions';
 import { listCalendars, getWeekEvents, createCalendarEvent, countConflicts, scoreSlot } from '@/lib/calendar';
 import { PLANETARY_GRID, TIME_BLOCKS, DAYS, ACTIVITIES, getBlockEndTime } from '@/lib/planetary';
 import { rateLimit, LIMITS } from '@/lib/rateLimit';
