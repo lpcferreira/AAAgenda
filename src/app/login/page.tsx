@@ -40,6 +40,12 @@ export default function LoginPage() {
         <p className={styles.hint}>
           Você poderá vincular outras contas Google após o login.
         </p>
+
+        <p className={styles.privacy}>
+          <a href="https://exd.ind.br/aaa_politicaprivacidade" target="_blank" rel="noopener noreferrer">
+            Política de Privacidade
+          </a>
+        </p>
       </div>
     </main>
   );

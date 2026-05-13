@@ -105,3 +105,14 @@
 }
 
 .logoOrange { color: #E8742A; }
+
+.privacy {
+  margin-top: 12px;
+  font-size: 0.78rem;
+  text-align: center;
+}
+.privacy a {
+  color: #888;
+  text-decoration: underline;
+}
+.privacy a:hover { color: #ccc; }
