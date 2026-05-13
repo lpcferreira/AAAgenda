@@ -27,7 +27,7 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title:       'AAAgenda',
-  description: 'Agende no momento certo. Horas Planetárias para sua semana.',
+  description: 'Agende suas atividades e planeje para o alinhamento com os momentos mais propícios.',
   manifest:    '/manifest.json',
   appleWebApp: {
     capable:           true,

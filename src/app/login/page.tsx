@@ -10,12 +10,11 @@ export default function LoginPage() {
           AA<span>A</span>genda
         </div>
         <p className={styles.tagline}>
-          Agende no momento certo.<br />
-          Deixe as Horas Planetárias guiar sua semana.
+          Agende suas atividades e planeje para o alinhamento com os momentos mais propícios.
         </p>
 
         <div className={styles.photoWrap}>
-          <img src="/arnaldo-grade.jpg" alt="Grade de Horas Planetárias" className={styles.gradePhoto} />
+          <img src="/arnaldo-grade.jpg" alt="Grade de blocos de Arnaldo Avileis" className={styles.gradePhoto} />
           <span className={styles.photoCredit}>grade original de Arnaldo Avileis</span>
         </div>
 

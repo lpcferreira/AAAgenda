@@ -49,7 +49,7 @@ export function SplashScreen({ onDone, calendars = [], userEmail, linkedEmails =
       <div className={`${styles.layer} ${phase === 'photo' ? styles.visible : styles.hidden}`}>
         <img
           src="/arnaldo-grade.jpg"
-          alt="Grade de Horas Planetárias de Arnaldo Avileis"
+          alt="Grade de blocos de Arnaldo Avileis"
           className={styles.photo}
           draggable={false}
         />
