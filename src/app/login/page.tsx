@@ -7,7 +7,7 @@ export default function LoginPage() {
     <main className={styles.root}>
       <div className={styles.card}>
         <div className={styles.logo}>
-          AA<span>A</span>genda
+          <span className={styles.logoOrange}>AA</span>Agenda
         </div>
         <p className={styles.tagline}>
           Agende suas atividades e planeje para o alinhamento com os momentos mais propícios.
